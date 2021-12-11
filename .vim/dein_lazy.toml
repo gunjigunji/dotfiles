@@ -1,0 +1,163 @@
+[[plugins]]
+repo = 'Shougo/deoplete.nvim'
+hook_add = '''
+  let g:deoplete#enable_at_startup = 1
+  "let g:deoplete#auto_complete_delay = 0
+  "let g:deoplete#custom#option()
+  "inoremap <expr><tab> pumvisible() ? "\<C-n>" :
+  "     \ neosnippet#expandable_or_jumpable() ?
+  "     \    "\<Plug>(neosnippet_expand_or_jump)" : "\<tab>"
+'''
+on_i=1
+
+[[plugins]]
+repo = 'Shougo/neosnippet.vim'
+depends = ['neosnippet-snippets', 'context_filetype.vim']
+on_i = 1
+hook_source = '''
+" Plugin key-mappings.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+" imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+" smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+" xmap <C-k>     <Plug>(neosnippet_expand_target)
+imap <C-s>     <Plug>(neosnippet_expand_or_jump)
+smap <C-s>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-s>     <Plug>(neosnippet_expand_target)
+
+" SuperTab like snippets behavior.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+"imap <expr><TAB>
+" \ pumvisible() ? "\<C-n>" :
+" \ neosnippet#expandable_or_jumpable() ?
+" \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+" smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+" \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+" For conceal markers.
+"if has('conceal')
+"  set conceallevel=2 concealcursor=niv
+"endif
+
+"Setting for my snippets_directory
+let g:neosnippet#snippets_directory = '$HOME/.vim/neosnippet-snippets/snippets/'
+'''
+
+[[plugins]]
+repo = 'Shougo/neosnippet-snippets'
+
+[[plugins]]
+repo = 'Shougo/context_filetype.vim'
+
+[[plugins]]
+repo = 'lervag/vimtex'
+if='has("nvim")'
+on_ft=['tex']
+hook_source='''
+  let g:vimtex_compiler_latexmk = {
+    \ 'background': 1,
+    \ 'build_dir': '',
+    \ 'continuous': 0,
+    \ 'options': [
+    \    '-pdfdvi', 
+    \    '-verbose',
+    \    '-bibtex',
+    \    '-file-line-error',
+    \    '-synctex=1',
+    \    '--interaction=nonstopmode',
+    \],
+    \}
+  let g:vimtex_view_general_viewer = '/Applications/Skim.app/Contents/SharedSupport/displayline'
+  let g:vimtex_view_general_options = '-r @line @pdf @tex'
+  let g:vimtex_compiler_progname = 'nvr'
+  let g:vimtex_fold_enabled = 1
+  let g:vimtex_fold_types = {
+    \ 'preamble' : {'enabled':1},
+    \ 'comment' : {'enabled':1},
+    \ 'sections' : {'sections': [ 'part', 'chapter', 'section', 'subsection', 'subsubsection' ]}, 
+    \}
+  let g:vimtex_quickfix_open_on_warning = 0
+  autocmd Filetype tex map <C-t> :w<cr><leader>ll
+  "autocmd Filetype tex inoremap { {}<++><Left><Left><Left><Left><Left>
+'''    
+hook_post_source='''
+   call deoplete#custom#var('omni', 'input_patterns', {
+    \ 'tex': g:vimtex#re#deoplete
+    \})
+'''
+
+# [[plugins]]
+# repo = 'skanehira/preview-markdown.vim'
+# if='has("nvim")'
+# on_ft=['markdown','md','mkd']
+# hook_source='''
+#   "let g:preview_markdown_parser = 'glow'
+#   let g:preview_markdown_parser = 'mdcat'
+#   let g:preview_markdown_vertical = 1
+#   nnoremap <C-t> :PreviewMarkdown right<CR>
+# '''
+
+[[plugins]]
+repo = 'previm/previm'
+if='has("nvim")'
+on_ft=['markdown','md','mkd']
+hook_source='''
+  let g:previm_open_cmd = 'open -a Google\ Chrome'
+  nnoremap <C-t> :PrevimOpen<CR>
+'''
+
+[[plugins]]
+repo = 'tyru/open-browser.vim'
+hook_add = '''
+  let g:netrw_nogx = 1
+  nmap gx <Plug>(openbrowser-smart-search)
+  vmap gx <Plug>(openbrowser-smart-search)
+  let g:openbrowser_browser_commands = [ {'name': '/opt/homebrew/Caskroom/google-chrome/88.0.4324.150,4324.150/Google\ Chrome.app/Contents/MacOS/Google\ Chrome', 'args': ['{browser}', '{uri}']} ]
+'''
+# hook_add = '''
+#   let g:openbrowser_browser_commands = [ {'name': 'google-chrome-stable', 'args': ['{browser}', '{uri}']} ]
+# '''
+
+[[plugins]]
+repo = 'iamcco/markdown-preview.nvim'
+#if='has("nvim")'
+on_ft = ['markdown', 'pandoc.markdown', 'rmd']
+build = 'sh -c "cd app && yarn install" '
+# build = 'cd app & yarn install'
+# hook_source='''
+# hook_add='''
+#   let g:mkdp_auto_start = 0
+#   let g:mkdp_auto_close = 1
+#   let g:mkdp_refresh_slow = 0
+#   let g:mkdp_command_for_global = 0
+#   let g:mkdp_open_to_the_world = 0
+#   let g:mkdp_open_ip = ''
+#   let g:mkdp_browser = ''
+#   let g:mkdp_echo_preview_url = 0
+#   let g:mkdp_browserfunc = ''
+#   let g:mkdp_preview_options = {
+#     \ 'mkit': {},
+#     \ 'katex': {},
+#     \ 'uml': {},
+#     \ 'maid': {},
+#     \ 'disable_sync_scroll': 0,
+#     \ 'sync_scroll_type': 'middle',
+#     \ 'hide_yaml_meta': 1
+#     \ }
+#   let g:mkdp_markdown_css = ''
+#   let g:mkdp_highlight_css = ''
+#   let g:mkdp_port = ''
+#   let g:mkdp_page_title = '「${name}」'
+#   let g:mkdp_filetypes = ['markdown']
+#   nnoremap <C-t> :MarkdownPreview<CR>
+# '''
+
+[[plugins]]
+repo = 'voldikss/vim-mma'
+on_ft = 'mma'
+hook_source='''
+  let g:mma_candy = 0
+'''
+
+[[plugins]]
+repo = 'mattn/emmet-vim'
