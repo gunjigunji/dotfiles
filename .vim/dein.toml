@@ -26,6 +26,7 @@ hook_add='''
 [[plugins]]
 repo = 'lambdalisue/fern.vim'
 hook_add='''
+  let g:fern_disable_startup_warnings = 1
   nnoremap <C-f> :Fern . -reveal=% -drawer -toggle -width=40<CR>
 '''
 
